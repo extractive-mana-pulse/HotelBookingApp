@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">AndroidJobTask</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="order_information">Order No. 104893 confirmation may take some time (from 1 hour to 24 hours). As soon as we receive a response from the tour operator, you will receive a notification by mail.</string>
+    <string name="order_accept">Order accepted!</string>
+    <string name="finish">Super!</string>
+    <string name="payed">Order Payed</string>
+    <string name="privacy_data">This data is not shared with anyone. After payment, we sent a check to the number and email you specified.</string>
+</resources>

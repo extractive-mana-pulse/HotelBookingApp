@@ -9,5 +9,6 @@ data class Room(
     val name: String,
     val peculiarities: List<String>,
     val price: Int,
-    val price_per: String
+    @SerializedName("price_per")
+    val price_information: String
 )

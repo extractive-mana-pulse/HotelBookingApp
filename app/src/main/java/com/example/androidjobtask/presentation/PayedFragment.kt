@@ -2,11 +2,10 @@ package com.example.androidjobtask.presentation
 
 import android.graphics.Color
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.example.androidjobtask.R
 import com.example.androidjobtask.databinding.FragmentPayedBinding
@@ -22,8 +21,8 @@ class PayedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        // TODO
         binding.apply {
+            finish.setBackgroundColor(Color.parseColor("#0D72FF"))
             finish.setOnClickListener {
                 findNavController().navigate(R.id.action_payedFragment_to_mainFragment)
             }

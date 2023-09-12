@@ -92,7 +92,7 @@ class MainFragment : Fragment() {
 
                     sharedViewModel.sharedPreferencesData.value = y
 
-                    name.text = responseBody.name
+                    nameOfHotel.text = responseBody.name
                     address.text = responseBody.adress
                     price.text = "from" + " " + responseBody.minimal_price.toString() + " " + "₽"
                     priceForIt.text = responseBody.price_for_it

@@ -1,5 +1,6 @@
 package com.example.androidjobtask.presentation
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -8,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.denzcoskun.imageslider.constants.ScaleTypes
@@ -17,7 +17,6 @@ import com.example.androidjobtask.R
 import com.example.androidjobtask.databinding.FragmentNumberBinding
 import com.example.androidjobtask.presentation.api.API
 import com.example.androidjobtask.presentation.data.NumberPageDate
-import com.example.androidjobtask.presentation.data.Room
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -63,50 +62,54 @@ class NumberFragment : Fragment() {
 
 
     private fun getData() {
-        val retrofitBuilder = Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
+        val retrofit = Retrofit.Builder()
             .baseUrl("https://run.mocky.io/")
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
-            .create(API::class.java)
-        val retrofitData = retrofitBuilder.getDataN()
 
-        retrofitData.enqueue(object : Callback<NumberPageDate?>{
+        val apiService = retrofit.create(API::class.java)
 
-            override fun onResponse(call: Call<NumberPageDate?>, response: Response<NumberPageDate?>) {
-                val responseBody = response.body()!!
+        apiService.getRooms().enqueue(object : Callback<NumberPageDate> {
+            @SuppressLint("SetTextI18n")
+            override fun onResponse(call: Call<NumberPageDate>, response: Response<NumberPageDate>) {
+                if (response.isSuccessful) {
+                    val roomsResponse = response.body()
+                    if (roomsResponse != null) {
+                        val rooms = roomsResponse.rooms
+                        for (room in rooms) {
+                            binding.apply {
 
-                    binding.apply {
+                                val img = room.url[0]
+                                val img1 = room.url[1]
+                                val img2 = room.url[2]
 
-//                        val img = responseBody.url[0]
-//                        val img1 = responseBody.url[1]
-//                        val img2 = responseBody.url[2]
-//
-//                        imageList.add(SlideModel(img))
-//                        imageList.add(SlideModel(img1))
-//                        imageList.add(SlideModel(img2))
-//
-//                        binding.imageSlider.setImageList(imageList, ScaleTypes.FIT)
-//
-//                        explanationOfHotel.text = responseBody.name
-//
-//                        price.text = responseBody.price.toString()
-//
-//                        priceInfo.text = responseBody.price_per
-//
-//                        val textViews: List<TextView> = listOf(peculiaritiesTV, peculiaritiesTV1)
-//
-//                        responseBody.peculiarities.forEachIndexed { index, value ->
-//                            if (index < textViews.size) {
-//                                textViews[index].text = value
-//                            }
-//                        }
+                                imageList.add(SlideModel(img))
+                                imageList.add(SlideModel(img1))
+                                imageList.add(SlideModel(img2))
+
+                                imageSlider.setImageList(imageList, ScaleTypes.FIT)
+
+                                explanationOfHotel.text = room.name
+                                val textViews: List<TextView> = listOf(peculiaritiesTV, peculiaritiesTV1)
+
+                                room.peculiarities.forEachIndexed { index, value ->
+                                    if (index < textViews.size) {
+                                        textViews[index].text = value
+                                    }
+                                }
+                                price.text = room.price.toString() + " ₽"
+                                priceInfo.text = room.price_information
+                            }
+                        }
                     }
+                } else {
+                    //...
+                }
             }
 
-            override fun onFailure(call: Call<NumberPageDate?>, t: Throwable) {
-                TODO("Not yet implemented")
+            override fun onFailure(call: Call<NumberPageDate>, t: Throwable) {
+                Log.d("main", "onFailure"+t.message)
             }
-
         })
     }
 
